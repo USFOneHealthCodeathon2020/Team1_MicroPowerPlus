@@ -1,6 +1,8 @@
 # Team1_Publix
 Team-leads: Jenna Oberstaller and Justin Gibbons
+
 Members:
+ * 
 
 Microbiome power-calculation tool for biologists: towards rigorous, reproducible microbiome study-design
 
