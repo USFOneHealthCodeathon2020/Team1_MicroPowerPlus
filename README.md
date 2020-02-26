@@ -7,6 +7,9 @@
 
 Microbiome power-calculation tool for biologists: towards rigorous, reproducible microbiome study-design
 
+![flowchart](https://github.com/USFOneHealthCodeathon2020/Team1_Publix/blob/master/Flowchart.png)
+
+
 ## Rationale:
 
 ## Goal:
