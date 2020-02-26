@@ -1,11 +1,15 @@
 # Team1_Publix
 **Team-leads:** Jenna Oberstaller and Justin Gibbons
 
-**Members:
+**Members:**
  
- * 
+ * Samira Jahangiri
+ * Francesca Prieto
+ * Vyoma Sheth
+ * Omkar Dokur
+ * Xiangyun (Sherry) Liao
 
-Microbiome power-calculation tool for biologists: towards rigorous, reproducible microbiome study-design
+# Microbiome power-calculation tool for biologists: towards rigorous, reproducible microbiome study-design
 
 ![flowchart](https://github.com/USFOneHealthCodeathon2020/Team1_Publix/blob/master/Flowchart.png)
 
