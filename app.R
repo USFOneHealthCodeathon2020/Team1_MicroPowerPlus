@@ -15,7 +15,7 @@ ui <- fluidPage(h1("Team1"),
                           "sampleType",
                           "Choose a Sample Type:",
                           c(
-                            "Human Gut" = "gut",
+                            "Human Gut" = "Human",
                             "Oral" = "oral",
                             "Lungs" = "lung",
                             "Vagina" = "vagina"
@@ -29,7 +29,7 @@ ui <- fluidPage(h1("Team1"),
                             "Five" = "5",
                             "Ten" = "10",
                             "Fifteen" = "15",
-                            "Twnety" = "20"
+                            "Twenty" = "20"
                           )
                         ),
                         sliderInput(
@@ -88,11 +88,22 @@ server <- function(input, output, session) {
   effect_size <- reactive({
     get_effect_size_from_sample_size_and_power(df_sim_data, input$sampleSize, input$power)
   })
-    
+  
   output$plot2 <- renderPlotly(
     plot3 <- plot_ly(
-      y = c(.5, .44, effect_size()),
-      x = c("Fixed", "Fixed1", input$sampleType),
+      y = c(0.023,0.024, 0, 0.099, 0.019, 0.230, effect_size()),
+      x = factor(c("Nares Smoker vs NonSmoker", 
+            "Oral Smoker vs NonSmoker", 
+            "Gut Before vs After Feeding", 
+            " Oral Azithromycin vs No Azithromycin", 
+            "Lung Azithromycin vs No Azithromycin", 
+            "Human Anterior Nares vs Stool", 
+            input$sampleType),c(input$sampleType,"Nares Smoker vs NonSmoker", 
+                                "Oral Smoker vs NonSmoker", 
+                                "Gut Before vs After Feeding", 
+                                " Oral Azithromycin vs No Azithromycin", 
+                                "Lung Azithromycin vs No Azithromycin", 
+                                "Human Anterior Nares vs Stool")),
       name = "Effect Size (How big would diff have to be?)",
       type = "bar"
     ) %>% layout(
@@ -136,4 +147,3 @@ get_effect_size_from_sample_size_and_power <-
 
 
 shinyApp(ui, server)
-
