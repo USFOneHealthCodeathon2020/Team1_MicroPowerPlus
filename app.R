@@ -3,7 +3,7 @@ library(plotly)
 library(tidyverse)
 
 # increase max R-Shiny user-input file size from 5 to 30 MB
-options(shiny.maxRequestSize = 30*1024^2)
+options(shiny.maxRequestSize = 30 * 1024 ^ 2)
 
 df_sim_data <- read_csv("human_gut_power_simulation_results.csv")
 
@@ -15,12 +15,12 @@ ui <- fluidPage(h1("Team1 PublixPower"),
                     br(),
                     sidebarLayout(
                       sidebarPanel(
-			      fileInput("user.otu", "Pilot-study OTU or ASV-table", placeholder = "Or select example data-set below"),
+                        fileInput("user.otu", "Pilot-study OTU or ASV-table", placeholder = "Or select example data-set below"),
                         selectInput(
                           "sampleType",
                           "Choose a Sample Type:",
                           c(
-                            "Human Gut" = "human",
+                            "Human Gut" = "gut",
                             "Oral" = "oral",
                             "Lungs" = "lung",
                             "Vagina" = "vagina"
@@ -37,6 +37,15 @@ ui <- fluidPage(h1("Team1 PublixPower"),
                             "Twenty" = "20"
                           )
                         ),
+                        
+                        selectInput(
+                          "mdistance",
+                          "Choose a Distance Measure:",
+                          c(
+                            "Weighted Jaccard" = "wjac",
+                            "Wegihted Unifrac" = "wfrac"
+                          )
+                        ),
                         sliderInput(
                           "power",
                           "Choose Power:",
@@ -45,15 +54,19 @@ ui <- fluidPage(h1("Team1 PublixPower"),
                           value = 0.8
                         ),
                         h4("Glossary"),
-                      
-                        p(a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3004851/", "1) Charlson et al. (2010)"),
+                        
+                        p(
+                          a(href = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3004851/", "1) Charlson et al. (2010)"),
                           "The effect size that was studied in this experiment was the microbiota from the right and left nasopharynxand oropharynx of 29 smoking and 33 nonsmoking healthy adults.  This experiment was conductedto determine the microbial configuration and effects of cigarette smoking.",
                           
-                          p(a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3480531/", "2) Charlson et al. (2012)"),
+                          p(
+                            a(href = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3480531/", "2) Charlson et al. (2012)"),
                             "The effect size that was studied in this experiment wasthe microbial populations found within the respiratorytract of transplant patients.It was discovered that lung transplant patients had a higher bacterial burden in the Broncho alveolarlavage rather than the control subjects, a more frequent showing of dominant organisms, an increased distance between communities in the Broncho alveolarlavage and oropharyngeal wash signifying a more distinct population, and a smaller respiratory tract microbial richness and diversity.",
-                            p(a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3564958/", "3) HMP Consortium (2012b)"),
+                            p(
+                              a(href = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3564958/", "3) HMP Consortium (2012b)"),
                               "The effect size that was studied in this experiment was the normal microbiota of healthy Western population adults.  The microbiome samples that were used in this experiment were derived from 18 body sites of 242 healthy individuals.  This allowed for an understanding of the relationships among microbes and microbiomesto be created, which will entail individual variation. ",
-                              p(a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3368382/", "4) Wu et al. (2011)"),
+                              p(
+                                a(href = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3368382/", "4) Wu et al. (2011)"),
                                 "The effect size that was studied inthis experiment was fecal communities that grouped into enterotypes characterized by various levels of Bacteroidesand Prevotella.It was deduced that alternative enterotype states are associated with a long-term diet."
                               )
                             )
@@ -95,12 +108,12 @@ ui <- fluidPage(h1("Team1 PublixPower"),
                   ),
                   tabPanel("Estimate Power",  fluid = TRUE,
                            br(),
-                           h3("Estimate Power coming soon"),),
+                           h3("Estimate Power coming soon"), ),
                   tabPanel(
                     "Estimate Effect Size",
                     fluid = TRUE,
                     br(),
-			  tags$a(href="https://academic.oup.com/bioinformatics/article/31/15/2461/188732#26918939", "Data-sources and example effect-size calculations")
+                    a(href = "https://academic.oup.com/bioinformatics/article/31/15/2461/188732#26918939", "Data-sources and example effect-size calculations"),
                     h4("Parameter Glossary"),
                     p(
                       "“adonis” is	a	function	for	the	analysis	and	partitioning	sums	of	squares	using	semimetric
@@ -151,7 +164,7 @@ server <- function(input, output, session) {
     get_effect_size_from_sample_size_and_power(df_sim_data,
                                                input$sampleSize,
                                                input$power,
-                                               input$sampleType)
+                                               input$sampleType, input$mdistance)
   })
   
   output$plot2 <- renderPlotly(
@@ -239,7 +252,7 @@ get_effect_size_from_sample_size_and_power <-
   function(df_sim_data,
            sample_size,
            power,
-           sample_type) {
+           sample_type, mdistance) {
     model <-
       calculate_effect_size_model_for_sample_size(df_sim_data, sample_size)
     effect_size <- get_effect_size_from_power(model, power)
