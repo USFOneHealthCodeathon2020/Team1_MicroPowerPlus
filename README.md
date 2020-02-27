@@ -1,4 +1,4 @@
-# Team1_Publix
+# Team1_PublixPower
 **Team-leads:** Jenna Oberstaller and Justin Gibbons
 
 **Members:**
