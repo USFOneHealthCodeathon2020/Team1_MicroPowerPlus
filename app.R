@@ -55,10 +55,10 @@ ui <- fluidPage(h1("Team1 PublixPower"),
                   ),
                   tabPanel("Literature",  fluid = TRUE,
                            br(),
-                           h3("Literature coming soon"), ),
+                           h3("Literature coming soon"),),
                   tabPanel("Estimate Power",  fluid = TRUE,
                            br(),
-                           h3("Estimate Power coming soon"), ),
+                           h3("Estimate Power coming soon"),),
                   tabPanel(
                     "Estimate Effect Size",
                     fluid = TRUE,
@@ -86,32 +86,55 @@ server <- function(input, output, session) {
   #   )
   # )
   effect_size <- reactive({
-    get_effect_size_from_sample_size_and_power(df_sim_data, input$sampleSize, input$power)
+    get_effect_size_from_sample_size_and_power(df_sim_data,
+                                               input$sampleSize,
+                                               input$power,
+                                               input$sampleType)
   })
   
   output$plot2 <- renderPlotly(
     plot3 <- plot_ly(
-      y = c(effect_size(),0.023,0.024, 0, 0.099, 0.019, 0.230),
-      x = c("Estimated Effect Size", "Nares Smoker vs NonSmoker", 
-            "Oral Smoker vs NonSmoker", 
-            "Gut Before vs After Feeding", 
-            " Oral Azithromycin vs No Azithromycin", 
-            "Lung Azithromycin vs No Azithromycin", 
-            "Human Anterior Nares vs Stool" 
-            ),
+      y = c(effect_size(), 0.099, 0.019, 0.023, 0.024, 0, 0.230),
+      x = c(
+        "Estimated Effect Size",
+        "Oral Azithromycin vs No Azithromycin",
+        "Lung Azithromycin vs No Azithromycin",
+        "Nares Smoker vs NonSmoker",
+        "Oral Smoker vs NonSmoker",
+        "Gut Before vs After Feeding",
+        "Human Anterior Nares vs Stool"
+      ),
+      text = c(
+        round(effect_size(), digits = 3),
+        '0.099',
+        '0.019',
+        '0.023',
+        '0.024',
+        '0',
+        '0.230'
+      ),
+      textposition = 'auto',
       name = "Effect Size (How big would diff have to be?)",
       type = "bar"
     ) %>% layout(
-      title = paste("Effect Size (How big would the difference\nbetween groups have to be to be detected?)"),
+      title = paste(
+        "Effect Size (How big would the difference\nbetween groups have to be to be detected?)"
+      ),
       height = 500,
       yaxis = list(title = "effect size"),
-      xaxis = list(title = "microbes", categoryarray = c("Estimated Effect Size", "Nares Smoker vs NonSmoker", 
-                                                         "Oral Smoker vs NonSmoker", 
-                                                         "Gut Before vs After Feeding", 
-                                                         " Oral Azithromycin vs No Azithromycin", 
-                                                         "Lung Azithromycin vs No Azithromycin", 
-                                                         "Human Anterior Nares vs Stool" 
-      ), categoryorder = "array")
+      xaxis = list(
+        title = "microbes",
+        categoryarray = c(
+          "Estimated Effect Size",
+          "Oral Azithromycin vs No Azithromycin",
+          "Lung Azithromycin vs No Azithromycin",
+          "Nares Smoker vs NonSmoker",
+          "Oral Smoker vs NonSmoker",
+          "Gut Before vs After Feeding",
+          "Human Anterior Nares vs Stool"
+        ),
+        categoryorder = "array"
+      )
     )
   )
 }
@@ -139,7 +162,10 @@ get_effect_size_from_power <- function(model, power) {
 
 
 get_effect_size_from_sample_size_and_power <-
-  function(df_sim_data, sample_size, power) {
+  function(df_sim_data,
+           sample_size,
+           power,
+           sample_type) {
     model <-
       calculate_effect_size_model_for_sample_size(df_sim_data, sample_size)
     effect_size <- get_effect_size_from_power(model, power)
