@@ -14,7 +14,7 @@ ui <- fluidPage(
                         "Lungs" = "lung",
                         "Vagina" = "vagina"
                       )),
-          selectInput("sampleSize", "Choose a sample size:",
+          selectInput("sampleSize", "Choose a Sample Size:",
                       c("Three" = "3",
                         "Five" = "5",
                         "Ten" = "10",
