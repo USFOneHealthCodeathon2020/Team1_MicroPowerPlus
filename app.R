@@ -19,7 +19,7 @@ ui <- fluidPage(
                         "Five" = "5",
                         "Ten" = "10",
                         "Fifteen" = "15",
-                        "Twnety" = "20"
+                        "Twenty" = "20"
                       )),
           sliderInput("power", "Choose Power:",
                       min = 0, max = 100, value = 50
