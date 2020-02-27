@@ -3,7 +3,7 @@ library(plotly)
 library(tidyverse)
 df_sim_data <- read_csv("human_gut_power_simulation_results.csv")
 
-ui <- fluidPage(h1("Team1"),
+ui <- fluidPage(h1("Team1 PublixPower"),
                 tabsetPanel(
                   tabPanel(
                     "Dashboard",
@@ -37,7 +37,7 @@ ui <- fluidPage(h1("Team1"),
                           "Choose Power:",
                           min = 0,
                           max = 1,
-                          value = 0.5
+                          value = 0.8
                         ),
                         # sliderInput(
                         #   "eSize",
@@ -107,7 +107,7 @@ server <- function(input, output, session) {
       name = "Effect Size (How big would diff have to be?)",
       type = "bar"
     ) %>% layout(
-      title = "Effect Size (How big would diff have to be?)",
+      title = paste("Effect Size (How big would the difference\nbetween groups have to be to be detected?)"),
       height = 500,
       yaxis = list(title = "effect size"),
       xaxis = list(title = "microbes")
