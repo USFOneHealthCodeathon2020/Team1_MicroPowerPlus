@@ -1,0 +1,77 @@
+---
+title: "PERMANOVA"
+output: html_document
+---
+Loading packages **vegan** multivariate analysis of ecological communities, and loading data.
+
+Adavantage for using this method: Non-paramentric,no assumed distribution, based on dissimilarities.
+
+```{r,results="hide",echo=T,include=T, message=F, warning=F}
+library(vegan)
+werra_sp    <- read.csv(file = "/Users/chengqiwang/Downloads/werra_sp.csv",
+                        header = T,sep=",",stringsAsFactors=FALSE,row.names = 1)
+
+werra_env   <- read.csv(file = "/Users/chengqiwang/Downloads/werra_env.csv",
+                        header = T,sep=",",stringsAsFactors=FALSE)  
+```
+
+##1. Transform or standardize data
+
+Sequencing reads is a large number and significant different vary groups. We'd better reduce the range/scale of it to about 10.$X^{(a)}$, $a\in (0,1)$ 
+```{r}
+range(werra_sp^0.25)
+```
+
+##2. Calculate ecological resemblance
+
+- Bray-Curtis dissimilarity (abundance weighted)
+- Jaccard (presence/absence)
+- Gower's non-continuous variables)
+*(Dissimilarity: 0 = sites are indentical, 1 = sites do not share any species)*
+
+```{r}
+dist_werra  <- vegdist(werra_sp^0.25,method = "bray")
+##nmds        <- metaMDS(dist_werra)##global Multidimensional Scaling using monoMDS
+  
+```
+
+##3.PERMANOVA
+
+**"adonis"** is a function for the analysis and partitioning sums of squares using semimetric and metric distance matrices. 
+
+**Null hypotheie** : There is no different between these two or more comparable groups.
+
+**R-square** is the important statistic for interpreting Adonis as it gives you the effect size.
+*(For example: an R-squared of 0.44 means that 44% of the variation in distances is explained by the grouping being tested. The p-value tells you whether or not this result was likely a result of chance. A p-value of 0.05 means that there is a 5% chance that you detected a difference between groups.)*
+
+**Small p-value with small R-square** : this situation normally because of large sample size. Actualy only small part can be explained, however large sample size make the p-value small.
+
+```{r}
+pmv         <- adonis(werra_sp^0.25~position,data = werra_env,
+                      permutations = 999,
+                      method = "bray")
+pmv
+```
+
+##4.Modify the effective size number
+
+**Omega-squared** ($\omega^2$) provides a less biased measure of effect size for ANOVA-type analyses by accounting for the mean-squared error of the observed samples.
+$$R^2=1-\frac{SS_A}{SS_T}$$ 
+$$\omega^2=\frac{SS_A-(a-1)\frac{SS_W}{N-a}}{SS_T+\frac{SS_W}{N-a}}$$
+```{r}
+df.rsd      <- pmv$aov.tab$Df[2]##degree of freedom of residual
+df.dfd      <- pmv$aov.tab$Df[1]##degrees of freedom defined by the grouping factor
+SS.A        <- pmv$aov.tab$SumsOfSqs[1]##between-group sum of squares
+SS.W        <- pmv$aov.tab$SumsOfSqs[2]##sum of the squares of distances within groups
+SS.T        <- pmv$aov.tab$SumsOfSqs[3]##total sum of squares 
+
+omega.sq    <-(SS.A-(df.dfd-1)*(SS.W/df.rsd))/(SS.T+SS.W/df.rsd);omega.sq
+```
+
+
+Display the density plot of all F-test.
+
+```{r}
+densityplot(permustats(pmv))
+```
+
