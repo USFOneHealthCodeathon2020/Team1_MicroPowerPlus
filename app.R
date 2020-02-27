@@ -1,6 +1,10 @@
 library(shiny)
 library(plotly)
 library(tidyverse)
+
+# increase max R-Shiny user-input file size from 5 to 30 MB
+options(shiny.maxRequestSize = 30*1024^2)
+
 df_sim_data <- read_csv("human_gut_power_simulation_results.csv")
 
 ui <- fluidPage(h1("Team1 PublixPower"),
@@ -11,6 +15,7 @@ ui <- fluidPage(h1("Team1 PublixPower"),
                     br(),
                     sidebarLayout(
                       sidebarPanel(
+			      fileInput("user.otu", "Pilot-study OTU or ASV-table", placeholder = "Or select example data-set below"),
                         selectInput(
                           "sampleType",
                           "Choose a Sample Type:",
@@ -95,6 +100,7 @@ ui <- fluidPage(h1("Team1 PublixPower"),
                     "Estimate Effect Size",
                     fluid = TRUE,
                     br(),
+			  tags$a(href="https://academic.oup.com/bioinformatics/article/31/15/2461/188732#26918939", "Data-sources and example effect-size calculations")
                     h4("Parameter Glossary"),
                     p(
                       "“adonis” is	a	function	for	the	analysis	and	partitioning	sums	of	squares	using	semimetric
