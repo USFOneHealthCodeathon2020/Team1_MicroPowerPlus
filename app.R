@@ -39,6 +39,21 @@ ui <- fluidPage(h1("Team1 PublixPower"),
                           max = 1,
                           value = 0.8
                         ),
+                        h4("Glossary"),
+                      
+                        p(a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3004851/", "1) Charlson et al. (2010)"),
+                          "The effect size that was studied in this experiment was the microbiota from the right and left nasopharynxand oropharynx of 29 smoking and 33 nonsmoking healthy adults.  This experiment was conductedto determine the microbial configuration and effects of cigarette smoking.",
+                          
+                          p(a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3480531/", "2) Charlson et al. (2012)"),
+                            "The effect size that was studied in this experiment wasthe microbial populations found within the respiratorytract of transplant patients.It was discovered that lung transplant patients had a higher bacterial burden in the Broncho alveolarlavage rather than the control subjects, a more frequent showing of dominant organisms, an increased distance between communities in the Broncho alveolarlavage and oropharyngeal wash signifying a more distinct population, and a smaller respiratory tract microbial richness and diversity.",
+                            p(a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3564958/", "3) HMP Consortium (2012b)"),
+                              "The effect size that was studied in this experiment was the normal microbiota of healthy Western population adults.  The microbiome samples that were used in this experiment were derived from 18 body sites of 242 healthy individuals.  This allowed for an understanding of the relationships among microbes and microbiomesto be created, which will entail individual variation. ",
+                              p(a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3368382/", "4) Wu et al. (2011)"),
+                                "The effect size that was studied inthis experiment was fecal communities that grouped into enterotypes characterized by various levels of Bacteroidesand Prevotella.It was deduced that alternative enterotype states are associated with a long-term diet."
+                              )
+                            )
+                          )
+                        )
                         # sliderInput(
                         #   "eSize",
                         #   "Choose Effect Size:",
@@ -80,7 +95,31 @@ ui <- fluidPage(h1("Team1 PublixPower"),
                     "Estimate Effect Size",
                     fluid = TRUE,
                     br(),
-                    h3("Estimate Effect Size coming soon"),
+                    h4("Parameter Glossary"),
+                    p(
+                      "“adonis” is	a	function	for	the	analysis	and	partitioning	sums	of	squares	using	semimetric
+and	metric	distance	matrices."
+                    ),
+                    p(
+                      "Null	hypothesis :	There	is	no	different	between	these	two	or	more	comparable	groups."
+                    ),
+                    p(
+                      "R-square is	the	important	statistic	for	interpreting	Adonis	as	it	gives	you	the	effect	size.
+(For	example:	an	R-squared	of	0.44	means	that	44%	of	the	variation	in	distances	is	explained
+by	the	grouping	being	tested.	The	p-value	tells	you	whether	or	not	this	result	was	likely	a
+result	of	chance.	A	p-value	of	0.05	means	that	there	is	a	5%	chance	that	you	detected	a
+difference	between	groups.)",
+                      p(
+                        "Small	p-value	with	small	R-square :	this	situation	normally	because	of	large	sample	size.
+Actualy	only	small	part	can	be	explained,	however	large	sample	size	make	the	p-value
+small."
+                      ),
+                      p(
+                        "Omega-squared (�+)	provides	a	less	biased	measure	of	effect	size	for	ANOVA-type
+analyses	by	accounting	for	the	mean-squared	error	of	the	observed	samples."
+                      )
+                    )
+                    
                   )
                 ))
 
@@ -132,7 +171,19 @@ server <- function(input, output, session) {
       ),
       textposition = 'auto',
       name = "Effect Size (How big would diff have to be?)",
-      type = "bar"
+      type = "bar",
+      marker = list(
+        color = c(
+          'rgba(222,45,38,0.8)',
+          'rgba(204,204,204,1)',
+          'rgba(204,204,204,1)',
+          'rgba(204,204,204,1)',
+          'rgba(204,204,204,1)',
+          'rgba(204,204,204,1)',
+          'rgba(204,204,204,1)'
+        )
+      )
+      # color = c(" blue, blue, blue, blue, blue, blue"),
     ) %>% layout(
       title = paste(
         "Effect Size (How big would the difference\nbetween groups have to be to be detected?)"
