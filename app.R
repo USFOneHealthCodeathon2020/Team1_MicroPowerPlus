@@ -1,7 +1,7 @@
 library(shiny)
 library(plotly)
 library(tidyverse)
-df_sim_data<-read_csv("human_gut_power_simulation_results.csv")
+df_sim_data <- read_csv("human_gut_power_simulation_results.csv")
 
 ui <- fluidPage(h1("Team1"),
                 tabsetPanel(
@@ -25,7 +25,7 @@ ui <- fluidPage(h1("Team1"),
                           "sampleSize",
                           "Choose a Sample Size:",
                           c(
-                            "Three" = "3",
+                            # "Three" = "3",
                             "Five" = "5",
                             "Ten" = "10",
                             "Fifteen" = "15",
@@ -48,18 +48,17 @@ ui <- fluidPage(h1("Team1"),
                         # )
                         
                       ),
-                      mainPanel(
-                        # plotlyOutput("plot1"),
+                      mainPanel(# plotlyOutput("plot1"),
                         #         br(),
-                                plotlyOutput("plot2"))
+                        plotlyOutput("plot2"))
                     )
                   ),
                   tabPanel("Literature",  fluid = TRUE,
                            br(),
-                           h3("Literature coming soon"),),
+                           h3("Literature coming soon"), ),
                   tabPanel("Estimate Power",  fluid = TRUE,
                            br(),
-                           h3("Estimate Power coming soon"),),
+                           h3("Estimate Power coming soon"), ),
                   tabPanel(
                     "Estimate Effect Size",
                     fluid = TRUE,
@@ -67,6 +66,7 @@ ui <- fluidPage(h1("Team1"),
                     h3("Estimate Effect Size coming soon"),
                   )
                 ))
+
 
 server <- function(input, output, session) {
   # output$plot1 <- renderPlotly(
@@ -85,47 +85,55 @@ server <- function(input, output, session) {
   #     xaxis = list(title = "microbes")
   #   )
   # )
-  
+  effect_size <- reactive({
+    get_effect_size_from_sample_size_and_power(df_sim_data, input$sampleSize, input$power)
+  })
+    
   output$plot2 <- renderPlotly(
-    effect_size<-get_effect_size_from_sample_size_and_power(df_sim_data,input$sampleSize,input$power),
     plot3 <- plot_ly(
-      x = c(matrix(rexp(
-        input$power, rate = .1
-      ))),
-      y = c(matrix(rexp(
-        input$power, rate = .1
-      ))),
+      y = c(.5, .44, effect_size()),
+      x = c("Fixed", "Fixed1", input$sampleType),
       name = "Effect Size (How big would diff have to be?)",
       type = "bar"
     ) %>% layout(
       title = "Effect Size (How big would diff have to be?)",
+      height = 500,
       yaxis = list(title = "effect size"),
       xaxis = list(title = "microbes")
     )
   )
 }
-calculate_effect_size_model_for_sample_size<-function(df,sample_size){
-  ###Calculate a model to predict the effect size given power
-  bp_model<-df %>% filter(Sample_Size==sample_size)
-  #bp_model <- subset(bp, power < 0.95 & power > 0.2)
-  bp_model <- data.frame(log_omega2=log10(bp_model$simulated_omega2),log_power=log10(bp_model$power))
-  bp_model <- subset(bp_model, log_omega2>-Inf)
-  View(bp_model)
-  bp_lm <- lm(log_omega2 ~ log_power, data=bp_model)
-  
-  return(bp_lm)
-}
 
-get_effect_size_from_power<-function(model,power){
-  effect_size <- 10^predict(model, newdata=data.frame(log_power=log10(power)))
+
+calculate_effect_size_model_for_sample_size <-
+  function(df, sample_size) {
+    ###Calculate a model to predict the effect size given power
+    bp_model <- df %>% filter(Sample_Size == sample_size)
+    #bp_model <- subset(bp, power < 0.95 & power > 0.2)
+    bp_model <-
+      data.frame(log_omega2 = log10(bp_model[["simulated_omega2"]]),
+                 log_power = log10(bp_model[["power"]]))
+    bp_model <- subset(bp_model, log_omega2 > -Inf)
+    View(bp_model)
+    bp_lm <- lm(log_omega2 ~ log_power, data = bp_model)
+    return(bp_lm)
+  }
+
+get_effect_size_from_power <- function(model, power) {
+  effect_size <-
+    10 ^ predict(model, newdata = data.frame(log_power = log10(power)))
   return(effect_size)
 }
 
 
-get_effect_size_from_sample_size_and_power<-function(df_sim_data,sample_size,power){
-  model<-calculate_effect_size_model_for_sample_size(df_sim_data,sample_size)
-  effect_size<-get_effect_size_from_power(model,power)
-  return(effect_size)
-}
+get_effect_size_from_sample_size_and_power <-
+  function(df_sim_data, sample_size, power) {
+    model <-
+      calculate_effect_size_model_for_sample_size(df_sim_data, sample_size)
+    effect_size <- get_effect_size_from_power(model, power)
+    return(effect_size)
+  }
+
 
 shinyApp(ui, server)
+
