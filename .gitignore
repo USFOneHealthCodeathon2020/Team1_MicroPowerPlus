@@ -1,0 +1,2 @@
+# this file tells git to ignore any files/directory in your local repository matching the pattern--files you don't want uploaded to the online-repo for everyone to download
+./my.fork/
