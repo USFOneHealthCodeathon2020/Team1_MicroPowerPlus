@@ -50,5 +50,13 @@ Download and open the "app.R" file in RStudio. In the upper-right corner of RStu
 ![RStudio screenshot](https://github.com/USFOneHealthCodeathon2020/Team1_PublixPower/blob/master/img/Rstudio.play.png)
 
 ![RStudio screenshot](https://github.com/USFOneHealthCodeathon2020/Team1_PublixPower/blob/master/img/Page1.png)
+
+![RStudio screenshot](https://github.com/USFOneHealthCodeathon2020/Team1_PublixPower/blob/master/img/Page2.png)
+
+![RStudio screenshot](https://github.com/USFOneHealthCodeathon2020/Team1_PublixPower/blob/master/img/Page3.png)
+
+![RStudio screenshot](https://github.com/USFOneHealthCodeathon2020/Team1_PublixPower/blob/master/img/Page4.png)
+
+![RStudio screenshot](https://github.com/USFOneHealthCodeathon2020/Team1_PublixPower/blob/master/img/Page5.png)
   
   
