@@ -11,7 +11,7 @@ df_sim_data <- read_csv("human_gut_power_simulation_results.csv")
 
 # the ui object has all the information for the user-interface
 ui <- fluidPage(
-  h1("Team1 PublixPower"),
+  h1("MicroPower Plus"),
   theme = shinytheme("sandstone"),
   tabsetPanel(
     # make the main tab
@@ -211,9 +211,10 @@ analyses	by	accounting	for	the	mean-squared	error	of	the	observed	samples."
       )
     ),
     tabPanel(
-      "Markdown",
+      "Effect Size Method Tutorial",
       fluid = TRUE,
       br(),
+      includeMarkdown('PERMANOVA.Rmd')
       
     )
   )
