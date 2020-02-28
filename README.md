@@ -47,6 +47,8 @@ R-packages [available from CRAN repository]():
 
 Download and open the "app.R" file in RStudio. In the upper-right corner of RStudio, press the "Run App" button.
 
+![RStudio screenshot](https://github.com/USFOneHealthCodeathon2020/Team1_PublixPower/blob/master/img/Rstudio.play.png)
+
 
 
   
