@@ -160,9 +160,9 @@ analyses	by	accounting	for	the	mean-squared	error	of	the	observed	samples."
                                 value = "Experimental Name")
             ),
             column(6
-              ,      textInput("controlName",
-                                p("Control Name"),
-                                value = "Control Name")
+                   ,      textInput("controlName",
+                                    p("Control Name"),
+                                    value = "Control Name")
             )),
             h4("Reference Data Sources"),
             
@@ -215,7 +215,7 @@ analyses	by	accounting	for	the	mean-squared	error	of	the	observed	samples."
       fluid = TRUE,
       br(),
       
-      )
+    )
   )
 )
 
@@ -350,7 +350,7 @@ server <- function(input, output, session) {
         "Human Anterior Nares vs Stool<sup>4</sup>"
       ),
       text = c(
-       '0.03',
+        '0.03',
         '0.099',
         '0.019',
         '0.023',
