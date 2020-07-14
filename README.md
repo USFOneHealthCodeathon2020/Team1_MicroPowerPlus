@@ -1,4 +1,4 @@
-# Team1_PublixPower
+# Team1_MicroPowerPlus
 **Team-leads:** Jenna Oberstaller and Justin Gibbons
 
 **Members:**
@@ -36,7 +36,7 @@ We added additional functionality to compute effect-size from these data-sets us
 
 ## Running our App
 
-The following packages are required to run PublixPower:
+The following packages are required to run MicroPowerPlus:
 
 RStudio
 
